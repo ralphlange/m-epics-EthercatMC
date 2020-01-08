@@ -18,6 +18,7 @@ env:
     - MOTOR_REPOURL=https://github.com/EuropeanSpallationSource/motor.git
     - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
     - TEST=YES
+    - VV=1.travis.yml
 
 addons:
   apt:
