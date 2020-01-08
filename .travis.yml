@@ -12,9 +12,11 @@ cache:
 env:
   global:
     - SETUP_PATH=.ci-local:.ci
-    - MODULES="asyn calc"
+    - MODULES="asyn calc motor"
     - ASYN_HOOK=.ci-local/fix_RELEASE.sh
     - CALC_HOOK=.ci-local/fix_RELEASE.sh
+    - MOTOR_URL=https://github.com/EuropeanSpallationSource/motor.git
+    - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
     - TEST=YES
 
 addons:
@@ -43,63 +45,13 @@ script:
 
 matrix:
   include:
-  - env: BASE=3.14
-  - env: BASE=3.15
-  - env: BASE=7.0
   - env: BASE=7.0
     compiler: clang
-
-# Windows
-    
-  - env: BASE=3.14 WINE=32 STATIC=YES
-    compiler: mingw
-
-  - env: BASE=3.14 WINE=64 STATIC=YES
-    compiler: mingw
-
-#  Dynamic linking is not supported for mingw in 3.14
-#  - env: BASE=R3.14.12.8 WINE=32 STATIC=NO
-#    compiler: mingw
-#
-#  - env: BASE=R3.14.12.8 WINE=64 STATIC=NO
-#    compiler: mingw
-
-  - env: BASE=3.15 WINE=32 STATIC=YES
-    compiler: mingw
-
-  - env: BASE=3.15 WINE=64 STATIC=YES
-    compiler: mingw
-
-  - env: BASE=3.15 WINE=32 STATIC=NO
-    compiler: mingw
-
-  - env: BASE=3.15 WINE=64 STATIC=NO
-    compiler: mingw
-
-  - env: BASE=7.0 WINE=32 STATIC=YES
-    compiler: mingw
-
-  - env: BASE=7.0 WINE=64 STATIC=YES
-    compiler: mingw
-
-  - env: BASE=7.0 WINE=32 STATIC=NO
-    compiler: mingw
-
-  - env: BASE=7.0 WINE=64 STATIC=NO
-    compiler: mingw
 
 #  - env: BASE=7.0 STATIC=YES
-#    os: windows
-#
-#  - env: BASE=7.0 STATIC=NO
-#    os: windows
-
-# RTEMS
-
-  - env: BASE=7.0 RTEMS=4.10
-  - env: BASE=7.0 RTEMS=4.9
+#    compiler: clang
 
 # MacOS
-  - env: BASE=7.0
-    os: osx
-    compiler: clang
+#  - env: BASE=7.0
+#    os: osx
+#    compiler: clang
