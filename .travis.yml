@@ -7,7 +7,7 @@ dist: trusty
 
 cache:
   directories:
-  - $HOME/.cache
+  - $HOME/.cache2
 
 env:
   global:
