@@ -17,6 +17,7 @@ env:
     - CALC_HOOK=.ci-local/fix_RELEASE.sh
     - MOTOR_REPOURL=https://github.com/EuropeanSpallationSource/motor.git
     - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
+    - MOTOR=ess-master
     - TEST=YES
     - VV=1.travis.yml
 
