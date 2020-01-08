@@ -15,7 +15,7 @@ env:
     - MODULES="asyn calc motor"
     - ASYN_HOOK=.ci-local/fix_RELEASE.sh
     - CALC_HOOK=.ci-local/fix_RELEASE.sh
-    - MOTOR_URL=https://github.com/EuropeanSpallationSource/motor.git
+    - MOTOR_REPOURL=https://github.com/EuropeanSpallationSource/motor.git
     - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
     - TEST=YES
 
