@@ -1,0 +1,11 @@
+MODULES=asyn calc motor
+
+include motor
+
+ASYN=R4-38
+CALC=R3-7-3
+MOTOR=ess-master
+
+ASYN_HOOK=.ci-local/fix_RELEASE.sh
+CALC_HOOK=.ci-local/fix_RELEASE.sh
+MOTOR_HOOK=.ci-local/fix_RELEASE.sh

@@ -1,59 +1,86 @@
-# .travis.xml for use with EPICS Base ci-scripts
+# .travis.yml for use with EPICS Base ci-scripts
 # (see: https://github.com/epics-base/ci-scripts)
+
+# This is YAML - indentation levels are crucial
 
 language: cpp
 compiler: gcc
-dist: trusty
+dist: xenial
 
 cache:
   directories:
-  - $HOME/.cache2
+  - $HOME/.cache
 
 env:
   global:
     - SETUP_PATH=.ci-local:.ci
-    - MODULES="asyn calc motor"
-    - ASYN_HOOK=.ci-local/fix_RELEASE.sh
-    - CALC_HOOK=.ci-local/fix_RELEASE.sh
-    - MOTOR_REPOURL=https://github.com/EuropeanSpallationSource/motor.git
-    - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
-    - MOTOR=ess-master
-    - TEST=YES
-    - VV=1.travis.yml
+    - VV=1
 
 addons:
   apt:
     packages:
+    # for all EPICS builds
     - libreadline6-dev
     - libncurses5-dev
     - perl
+    # for clang compiler
     - clang
+    # for mingw builds (32bit and 64bit)
     - g++-mingw-w64-i686
     - g++-mingw-w64-x86-64
+    # for RTEMS cross builds
     - qemu-system-x86
-    - libpcre3-dev
   homebrew:
     packages:
-    - re2c
+    # for all EPICS builds
     - bash
+    # for the sequencer
+    - re2c
     update: true
 
 install:
-  - .ci/travis/prepare.sh
-  - .ci-local/fix_RELEASE.sh
+  - ./.ci/travis/prepare.sh
 
 script:
-  - .ci/travis/build.sh
+  - ./.ci/travis/build.sh
 
-matrix:
+# If you need to do more during install and build,
+# add a local directory to your module and do e.g.
+#  - ./.ci-local/travis/install-extras.sh
+
+# Define build jobs
+
+# Well-known variables to use
+# SET      source setup file
+# EXTRA    content will be added to make command line
+# STATIC   set to YES for static build (default: NO)
+# TEST     set to NO to skip running the tests (default: YES)
+# VV       set to make build scripts verbose (default: unset)
+
+# Usually from setup files, but may be specified or overridden
+#  on a job line
+# MODULES  list of dependency modules
+# BASE     branch or release tag name of the EPICS Base to use
+# <MODULE> branch or release tag for a specific module
+# ...      see README for setup file syntax description
+
+jobs:
   include:
-  - env: BASE=7.0
+
+# Different configurations of default gcc and clang
+
+  - env: BASE=7.0 SET=latest
+
+  - env: BASE=7.0 SET=latest
     compiler: clang
 
-#  - env: BASE=7.0 STATIC=YES
-#    compiler: clang
+# Trusty: compiler versions very close to RHEL 7
 
-# MacOS
-#  - env: BASE=7.0
-#    os: osx
-#    compiler: clang
+  - env: BASE=7.0 SET=latest
+    dist: trusty
+
+# MacOS build
+
+  - env: BASE=7.0 SET=latest
+    os: osx
+    compiler: clang
