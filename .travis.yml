@@ -1,11 +1,26 @@
-sudo: false
-dist: bionic
-language: c
-compiler:
-  - gcc
+# .travis.xml for use with EPICS Base ci-scripts
+# (see: https://github.com/epics-base/ci-scripts)
+
+language: cpp
+compiler: gcc
+dist: trusty
+
 cache:
   directories:
-    - $HOME/.cache
+  - $HOME/.cache
+
+env:
+  global:
+    - SETUP_PATH=.ci-local:.ci
+    - MODULES="asyn calc motor"
+    - ASYN_HOOK=.ci-local/fix_RELEASE.sh
+    - CALC_HOOK=.ci-local/fix_RELEASE.sh
+    - MOTOR_REPOURL=https://github.com/EuropeanSpallationSource/motor.git
+    - MOTOR_HOOK=.ci-local/fix_RELEASE.sh
+    - MOTOR=ess-master
+    - TEST=YES
+    - VV=1.travis.yml
+
 addons:
   apt:
     packages:
@@ -14,9 +29,31 @@ addons:
     - perl
     - clang
     - g++-mingw-w64-i686
+    - g++-mingw-w64-x86-64
+    - qemu-system-x86
+    - libpcre3-dev
+  homebrew:
+    packages:
     - re2c
-env:
- - BASE=7.0     STATIC=shared                     ASYN=R4-35 MOTOR=v7.0.1-ESS
- - BASE=7.0     STATIC=static                     ASYN=R4-35 MOTOR=v7.0.1-ESS
-install: ./.ci-ethercatmc/travis-prepare.sh
-script: make
+    - bash
+    update: true
+
+install:
+  - .ci/travis/prepare.sh
+  - .ci-local/fix_RELEASE.sh
+
+script:
+  - .ci/travis/build.sh
+
+matrix:
+  include:
+  - env: BASE=7.0
+    compiler: clang
+
+#  - env: BASE=7.0 STATIC=YES
+#    compiler: clang
+
+# MacOS
+#  - env: BASE=7.0
+#    os: osx
+#    compiler: clang
