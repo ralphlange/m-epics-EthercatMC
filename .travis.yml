@@ -47,8 +47,9 @@ script:
 
 matrix:
   include:
-  - env: BASE=7.0
-    compiler: clang
+  - env: BASE=7.0 MOTOR=ess-master
+
+  - env: BASE=7.0 MOTOR=R7-1
 
 #  - env: BASE=7.0 STATIC=YES
 #    compiler: clang
